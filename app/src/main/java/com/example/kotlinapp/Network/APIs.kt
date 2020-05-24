@@ -10,6 +10,6 @@ import retrofit2.http.Query
 interface APIs {
 
     @GET("/AllUsers")
-    fun getAllUsers(): Observable<List<User>>
+    fun getAllUsers(): Observable<response>
 
 }

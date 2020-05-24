@@ -23,7 +23,7 @@ class MainViewModel() : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     var users = MutableLiveData<List<User>>()
 
-    internal fun fetchAllUsers() : LiveData<List<User>> {
+    internal fun fetchAllUsers() : MutableLiveData<List<User>> {
         val api: APIs=RetrofitClient.buildService(APIs::class.java);
         val disposable = api.getAllUsers()
             .observeOn(AndroidSchedulers.mainThread())
@@ -44,11 +44,12 @@ class MainViewModel() : ViewModel() {
 
     }
 
-    private fun onResponses(response: List<User>) {
-        for(a in response){
+    private fun onResponses(response:response) {
+        println("zaaaaaaaaaaaaaaaaaaaaaa")
+        for(a in response.user){
             println(a.name)
         }
-        users.value=response;
+        users.value=response.user;
 
     }
 
