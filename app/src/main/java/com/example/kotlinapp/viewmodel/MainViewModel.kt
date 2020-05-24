@@ -45,10 +45,6 @@ class MainViewModel() : ViewModel() {
     }
 
     private fun onResponses(response:response) {
-        println("zaaaaaaaaaaaaaaaaaaaaaa")
-        for(a in response.user){
-            println(a.name)
-        }
         users.value=response.user;
 
     }

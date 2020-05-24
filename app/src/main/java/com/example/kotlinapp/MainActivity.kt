@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinapp.Adapter.UsersAdapter
 import com.example.kotlinapp.Model.User
+import com.example.kotlinapp.Model.response
 import com.example.kotlinapp.viewmodel.MainViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,11 +23,12 @@ class MainActivity : AppCompatActivity() {
             ViewModelProviders.of(this).get(MainViewModel::class.java);
 
         mainViewModel.fetchAllUsers().observe(this, Observer<List<User>>() {
-            var users: List<User>
-            users=it
-            recyclerView.adapter = UsersAdapter(it)
-        }).apply {
-        }
+            recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter =UsersAdapter(it)
+            }
+        })
 //        recyclerView.adapter = UsersAdapter(mainViewModel.users.value!!)
 
 
