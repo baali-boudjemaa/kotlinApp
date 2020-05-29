@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">kotlinApp</string>
+    <string name="user_error">error!</string>
 </resources>

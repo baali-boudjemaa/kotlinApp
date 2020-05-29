@@ -5,9 +5,9 @@
     <data>
         <variable
             name="user"
-            type="com.example.kotlinapp.Model.User" />
+            type="com.example.kotlinapp.models.User" />
     </data>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="10dp"

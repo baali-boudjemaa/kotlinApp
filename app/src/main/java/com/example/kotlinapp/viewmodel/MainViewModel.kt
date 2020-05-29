@@ -1,31 +1,28 @@
 package com.example.kotlinapp.viewmodel
 
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinapp.Adapter.UsersAdapter
 import com.example.kotlinapp.Injection.component.DaggerViewModelInjector
 import com.example.kotlinapp.Injection.component.ViewModelInjector
-import com.example.kotlinapp.Injection.module.NetworkModule
-import com.example.kotlinapp.Model.User
-import com.example.kotlinapp.Model.response
+import com.example.kotlinapp.models.User
+import com.example.kotlinapp.models.response
 import com.example.kotlinapp.Network.APIs
-import com.example.kotlinapp.Network.RetrofitClient
+import com.example.kotlinapp.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Response
 import javax.inject.Inject
 
 
 class MainViewModel() : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
+    var usersAdapter:UsersAdapter=UsersAdapter();
     var users = MutableLiveData<List<User>>()
+    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    val errorMessage:MutableLiveData<Int> = MutableLiveData()
     private val injector: ViewModelInjector =
         DaggerViewModelInjector.builder().build()
 
@@ -37,7 +34,12 @@ class MainViewModel() : ViewModel() {
         val disposable = api.getAllUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({ it -> this.onResponses(it) }, this::onFailures)
+            .doOnSubscribe { onRetrievePostListStart() }
+            .doOnTerminate { onRetrieveUsertListFinish() }
+            .subscribe(
+                { onRetrieveUserListSuccess(it.user) },
+                { onRetrieveUserListError() }
+            )
 
         compositeDisposable.add(disposable)
         return users;
@@ -58,5 +60,20 @@ class MainViewModel() : ViewModel() {
         users.value = response.user;
 
     }
+    private fun onRetrievePostListStart(){
+        loadingVisibility.value = View.VISIBLE
+        errorMessage.value = null
+    }
 
+    private fun onRetrieveUsertListFinish(){
+        loadingVisibility.value = View.GONE
+    }
+
+    private fun onRetrieveUserListSuccess(users:List<User>){
+        usersAdapter.updateUserList(users)
+    }
+
+    private fun onRetrieveUserListError(){
+        errorMessage.value = R.string.user_error
+    }
 }
