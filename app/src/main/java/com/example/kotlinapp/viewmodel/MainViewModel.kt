@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinapp.Adapter.UsersAdapter
+import com.example.kotlinapp.Injection.component.DaggerViewModelInjector
+import com.example.kotlinapp.Injection.component.ViewModelInjector
+import com.example.kotlinapp.Injection.module.NetworkModule
 import com.example.kotlinapp.Model.User
 import com.example.kotlinapp.Model.response
 import com.example.kotlinapp.Network.APIs
@@ -17,14 +20,20 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
+import javax.inject.Inject
 
 
 class MainViewModel() : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     var users = MutableLiveData<List<User>>()
+    private val injector: ViewModelInjector =
+        DaggerViewModelInjector.builder().build()
 
-    internal fun fetchAllUsers() : MutableLiveData<List<User>> {
-        val api: APIs=RetrofitClient.buildService(APIs::class.java);
+    @Inject
+    lateinit var api: APIs
+
+    internal fun fetchAllUsers(): MutableLiveData<List<User>> {
+        injector.inject(this)
         val disposable = api.getAllUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -40,12 +49,13 @@ class MainViewModel() : ViewModel() {
         compositeDisposable.dispose()
         super.onCleared()
     }
+
     private fun onFailures(t: Throwable) {
 
     }
 
-    private fun onResponses(response:response) {
-        users.value=response.user;
+    private fun onResponses(response: response) {
+        users.value = response.user;
 
     }
 
