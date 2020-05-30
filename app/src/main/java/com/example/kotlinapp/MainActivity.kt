@@ -22,17 +22,17 @@ class MainActivity : AppCompatActivity() {
 
         var mainViewModel: MainViewModel =
             ViewModelProviders.of(this).get(MainViewModel::class.java);
-        binding.viewModel = mainViewModel
+
 
         mainViewModel.fetchAllUsers().observe(this, Observer<List<User>>() {
             recyclerView.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter =UsersAdapter().updateUserList(it);
+                adapter =UsersAdapter().updateUserList(it)
             }
         })
 //        recyclerView.adapter = UsersAdapter(mainViewModel.users.value!!)
 
-
+        //binding.viewModel = mainViewModel
     }
 }

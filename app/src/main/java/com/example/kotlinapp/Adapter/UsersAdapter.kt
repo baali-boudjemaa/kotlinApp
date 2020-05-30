@@ -1,8 +1,8 @@
 package com.example.kotlinapp.Adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinapp.models.User
@@ -13,14 +13,15 @@ import kotlinx.android.synthetic.main.raw.view.*
 class UsersAdapter() : RecyclerView.Adapter<UsersViewHolder>() {
     lateinit var users: List<User>;
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding: RawBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
+            layoutInflater,
             R.layout.raw,
             parent,
             false
         )
 
-        return UsersViewHolder(binding.root)
+        return UsersViewHolder(binding)
     }
 
     fun updateUserList(users: List<User>):UsersAdapter {
@@ -33,17 +34,21 @@ class UsersAdapter() : RecyclerView.Adapter<UsersViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        return holder.bind(users[position])
+         holder.bind(users[position])
     }
 }
 
-class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class UsersViewHolder(val binding : RawBinding) : RecyclerView.ViewHolder(binding.root) {
 
+     // var tc:TextView=itemView.tc
 
     fun bind(user: User) {
-        itemView.apply {
-            ids.text = """${user.id}"""
-            name.text = user.name
+
+        binding.apply {
+            println(user.uid)
+            tc.text=user.uid
+            iid = user.ids.toString()
+           names = user.name
         }
         // Glide.with(itemView.context).load("http://image.tmdb.org/t/p/w500${movie.poster_path}").into(photo)
 

@@ -37,7 +37,7 @@ class MainViewModel() : ViewModel() {
             .doOnSubscribe { onRetrievePostListStart() }
             .doOnTerminate { onRetrieveUsertListFinish() }
             .subscribe(
-                { onRetrieveUserListSuccess(it.user) },
+                { onRetrieveUserListSuccess(it) },
                 { onRetrieveUserListError() }
             )
 
@@ -69,8 +69,8 @@ class MainViewModel() : ViewModel() {
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrieveUserListSuccess(users:List<User>){
-        usersAdapter.updateUserList(users)
+    private fun onRetrieveUserListSuccess(response: response){
+        usersAdapter.updateUserList(response.user)
     }
 
     private fun onRetrieveUserListError(){
