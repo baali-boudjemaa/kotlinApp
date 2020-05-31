@@ -11,7 +11,7 @@ import com.example.kotlinapp.databinding.RawBinding
 import kotlinx.android.synthetic.main.raw.view.*
 
 class UsersAdapter() : RecyclerView.Adapter<UsersViewHolder>() {
-    lateinit var users: List<User>;
+   lateinit var users: List<User>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: RawBinding = DataBindingUtil.inflate(
@@ -24,13 +24,14 @@ class UsersAdapter() : RecyclerView.Adapter<UsersViewHolder>() {
         return UsersViewHolder(binding)
     }
 
-    fun updateUserList(users: List<User>):UsersAdapter {
-        this.users = users
-        return this
+    fun updateUserList(user: List<User>) {
+        this.users = user
+        notifyDataSetChanged()
+
     }
 
     override fun getItemCount(): Int {
-        return users.size
+        return if(::users.isInitialized) users.size else 0
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {

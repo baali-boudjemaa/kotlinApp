@@ -23,7 +23,10 @@
         app:adapter="@{viewModel.getUsersAdapter()}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:divider="@android:color/black"
+        android:dividerHeight="8dp"
+        />
     <ProgressBar
     android:id="@+id/progressBar"
     android:layout_width="wrap_content"
@@ -32,7 +35,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-
+        app:mutableVisibility="@{viewModel.getLoadingVisibility()}"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

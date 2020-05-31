@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">kotlinApp</string>
     <string name="user_error">error!</string>
+
+    <string name="retry">Retry</string>
+    <string name="post_error">An error occurred while loading the posts</string>
+
 </resources>

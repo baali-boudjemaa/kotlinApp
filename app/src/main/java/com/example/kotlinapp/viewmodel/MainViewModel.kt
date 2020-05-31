@@ -19,30 +19,34 @@ import javax.inject.Inject
 
 class MainViewModel() : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
-    var usersAdapter:UsersAdapter=UsersAdapter();
+
+    val errorClickListener = View.OnClickListener { fetchAllUsers() }
     var users = MutableLiveData<List<User>>()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorMessage:MutableLiveData<Int> = MutableLiveData()
-    private val injector: ViewModelInjector =
-        DaggerViewModelInjector.builder().build()
-
+    private val injector: ViewModelInjector = DaggerViewModelInjector.builder().build()
+init {
+    fetchAllUsers();
+}
+     var usersAdapter:UsersAdapter= UsersAdapter();
     @Inject
     lateinit var api: APIs
 
-    internal fun fetchAllUsers(): MutableLiveData<List<User>> {
+    internal fun fetchAllUsers(){
         injector.inject(this)
         val disposable = api.getAllUsers()
+
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnSubscribe { onRetrievePostListStart() }
             .doOnTerminate { onRetrieveUsertListFinish() }
             .subscribe(
-                { onRetrieveUserListSuccess(it) },
+                {onResponses(it) },
                 { onRetrieveUserListError() }
             )
 
         compositeDisposable.add(disposable)
-        return users;
+
     }
 
     // This is called by the Android Activity when the activity is destroyed
@@ -57,7 +61,9 @@ class MainViewModel() : ViewModel() {
     }
 
     private fun onResponses(response: response) {
-        users.value = response.user;
+
+        usersAdapter.updateUserList(response.user)
+       // users.value = response.user;
 
     }
     private fun onRetrievePostListStart(){
@@ -70,7 +76,10 @@ class MainViewModel() : ViewModel() {
     }
 
     private fun onRetrieveUserListSuccess(response: response){
-        usersAdapter.updateUserList(response.user)
+        for (i in response.user) println(i.name)
+
+      //  usersAdapter=UsersAdapter(response.user);
+        //users.value = response.user;
     }
 
     private fun onRetrieveUserListError(){
