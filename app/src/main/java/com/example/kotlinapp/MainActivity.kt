@@ -13,6 +13,7 @@ import com.example.kotlinapp.Adapter.UsersAdapter
 import com.example.kotlinapp.databinding.ActivityMainBinding
 import com.example.kotlinapp.models.User
 import com.example.kotlinapp.viewmodel.MainViewModel
+import com.example.kotlinapp.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil. setContentView(this, R.layout.activity_main)
 
-        var mainViewModel: MainViewModel =
-            ViewModelProviders.of(this).get(MainViewModel::class.java);
+        var mainViewModel: MainViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val decoration =
