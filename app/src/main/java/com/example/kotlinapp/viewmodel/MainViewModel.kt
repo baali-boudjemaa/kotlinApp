@@ -11,13 +11,14 @@ import com.example.kotlinapp.models.User
 import com.example.kotlinapp.models.response
 import com.example.kotlinapp.Network.APIs
 import com.example.kotlinapp.R
+import com.example.kotlinapp.database.UserDao
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class MainViewModel() : ViewModel() {
+class MainViewModel(userDao: UserDao) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val errorClickListener = View.OnClickListener { fetchAllUsers() }
