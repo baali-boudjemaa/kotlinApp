@@ -20,14 +20,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var   binding : ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private lateinit var mainViewModel: MainViewModel
     private var errorSnackbar: Snackbar? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil. setContentView(this, R.layout.activity_main)
 
-        var mainViewModel: MainViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
+         mainViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showError(@StringRes errorMessage:Int){
         errorSnackbar = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_INDEFINITE)
-        errorSnackbar?.setAction(R.string.retry, viewModel.errorClickListener)
+        errorSnackbar?.setAction(R.string.retry, mainViewModel.errorClickListener)
         errorSnackbar?.show()
     }
 
