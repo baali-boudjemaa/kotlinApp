@@ -30,7 +30,9 @@ class MainViewModel(val userDao: UserDao) : ViewModel() {
 
     init {
         fetchAllUsers();
-    }
+
+        }
+
 
     var usersAdapter: UsersAdapter = UsersAdapter();
 
@@ -39,6 +41,7 @@ class MainViewModel(val userDao: UserDao) : ViewModel() {
 
     internal fun fetchAllUsers() {
         injector.inject(this)
+
 
         val disposable = Observable.fromCallable { userDao.all
         }.concatMap {
